@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 
-use crate::common::models::{IdRequest, ObjectList};
+use crate::common::models::{IdRequest, ObjectList, Page};
 use crate::blog::models::{NewPost, Post};
 use crate::database::establish_connection;
 use crate::schema::posts;
@@ -16,7 +16,12 @@ pub async fn list_posts() -> ObjectList<Post> {
         .expect("Error loading posts");
 
     ObjectList {
-        objects: results
+        objects: results,
+        page: Page {
+            page: 1,
+            per_page: 10,
+            count: 0,
+        }
     }
 }
 

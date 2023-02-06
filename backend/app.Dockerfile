@@ -10,8 +10,6 @@ WORKDIR /app
 COPY Cargo.lock ./Cargo.lock
 COPY Cargo.toml ./Cargo.toml
 
-# Cache our dependencies
-RUN rm -rf ~/.cargo/registry/*
 RUN cargo build --release
 RUN rm src/*.rs
 

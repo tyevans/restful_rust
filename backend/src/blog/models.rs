@@ -5,7 +5,7 @@ use crate::schema::posts;
 
 #[derive(Serialize, Clone, Queryable)]
 pub struct Post {
-    pub id: i32,
+    pub id: uuid::Uuid,
     pub title: String,
     pub body: String,
     pub published: bool,

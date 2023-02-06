@@ -2,15 +2,15 @@
 
 diesel::table! {
     auth_group_permissions (id) {
-        id -> Int4,
-        group_id -> Int4,
-        permission_id -> Int4,
+        id -> Uuid,
+        group_id -> Uuid,
+        permission_id -> Uuid,
     }
 }
 
 diesel::table! {
     auth_groups (id) {
-        id -> Int4,
+        id -> Uuid,
         name -> Text,
         description -> Text,
     }
@@ -18,7 +18,7 @@ diesel::table! {
 
 diesel::table! {
     auth_permissions (id) {
-        id -> Int4,
+        id -> Uuid,
         name -> Text,
         description -> Text,
     }
@@ -26,15 +26,15 @@ diesel::table! {
 
 diesel::table! {
     auth_user_groups (id) {
-        id -> Int4,
-        user_id -> Int4,
-        group_id -> Int4,
+        id -> Uuid,
+        user_id -> Uuid,
+        group_id -> Uuid,
     }
 }
 
 diesel::table! {
     auth_users (id) {
-        id -> Int4,
+        id -> Uuid,
         display_name -> Text,
         email -> Text,
         active -> Bool,
@@ -43,7 +43,7 @@ diesel::table! {
 
 diesel::table! {
     posts (id) {
-        id -> Int4,
+        id -> Uuid,
         title -> Varchar,
         body -> Text,
         published -> Bool,

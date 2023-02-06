@@ -15,6 +15,8 @@ use crate::auth::views::auth_route_config;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    std::env::set_var("RUST_LOG", "actix_web=debug");
+
     HttpServer::new(|| {
         App::new().service(
             web::scope("/api").service(
