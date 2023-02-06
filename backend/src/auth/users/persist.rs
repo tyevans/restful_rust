@@ -55,6 +55,17 @@ pub async fn create_user(new_user: NewUser) -> User {
 }
 
 
+pub async fn update_user(user_id: uuid::Uuid, updated_user: NewUser) -> User {
+    let connection = &mut establish_connection();
+
+    diesel::update(auth_users::table)
+        .filter(auth_users::id.eq(user_id))
+        .set(&updated_user)
+        .get_result::<User>(connection)
+        .expect("Error saving new user")
+}
+
+
 pub async fn delete_user(user_id: uuid::Uuid) {
     let connection = &mut establish_connection();
 
@@ -72,4 +83,15 @@ pub async fn add_user_group(user_group: NewUserGroup) -> UserGroup {
         .values(&user_group)
         .get_result::<UserGroup>(connection)
         .expect("Error adding user to group")
+}
+
+
+pub async fn delete_user_group(user_group: NewUserGroup) {
+    let connection = &mut establish_connection();
+
+    diesel::delete(auth_user_groups::table)
+        .filter(auth_user_groups::user_id.eq(user_group.user_id))
+        .filter(auth_user_groups::group_id.eq(user_group.group_id))
+        .execute(connection)
+        .expect("Failed to delete user");
 }

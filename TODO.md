@@ -16,10 +16,11 @@
 - [X] read_user
 - [X] create_user
 - [ ] create_user - first key
-- [ ] update_user
+- [X] update_user
 - [X] delete_user
+- [ ] list_user_groups
 - [X] add_user_group
- 
+- [X] remove_user_group
 
 ### Groups
 
@@ -28,9 +29,11 @@
 - [ ] list_groups filtering
 - [X] read_group
 - [X] create_group
-- [ ] bulk_add_group_users
-- [ ] remove_group_user
-- [ ] user_in_group
+- [X] delete_group
+- [ ] list_group_users
+- [X] add_group_permission
+- [X] list_group_permission
+- [ ] remove_group_permission
 
 ### Permissions
 
@@ -39,10 +42,5 @@
 - [ ] list_permissions filtering
 - [X] read_permission
 - [X] create_permission
-- [X] add_group_permission
-- [X] list_group_permission
-- [ ] bulk_add_group_permissions
-- [ ] remove_group_permission
-- [ ] bulk_remove_group_permission
+- [ ] delete_permission
 - [ ] user_has_permission
-- [ ] bulk_user_has_permissions

@@ -32,6 +32,15 @@ pub async fn api_create_group(new_group: web::Json<NewGroup>) -> web::Json<Group
     web::Json(group)
 }
 
+#[delete("groups/{id}")]
+pub async fn api_delete_group(
+    query: web::Path<IdRequest>
+) -> &'static str {
+    persist::delete_group(query.into_inner().id).await;
+    "OK"
+}
+
+
 #[get("groups/{id}/users")]
 pub async fn api_list_group_users(
     params: web::Path<IdRequest>,

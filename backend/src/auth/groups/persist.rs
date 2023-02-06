@@ -126,6 +126,16 @@ pub async fn create_group(new_group: NewGroup) -> Group {
 }
 
 
+pub async fn delete_group(group_id: uuid::Uuid) {
+    let connection = &mut establish_connection();
+
+    diesel::delete(auth_groups::table)
+        .filter(auth_groups::id.eq(group_id))
+        .execute(connection)
+        .expect("Failed to delete group");
+}
+
+
 pub async fn add_group_permission(group_perm: NewGroupPermission) -> GroupPermission {
     let connection = &mut establish_connection();
 

@@ -15,7 +15,7 @@ pub async fn api_list_perms(query: web::Query<ListQuery>) -> web::Json<ObjectLis
 }
 
 #[get("perms/{id}")]
-pub async fn api_read_perms(query: web::Path<IdRequest>) -> web::Json<Permission> {
+pub async fn api_read_perm(query: web::Path<IdRequest>) -> web::Json<Permission> {
     let perm = persist::read_perm(query.into_inner()).await;
     web::Json(perm)
 }

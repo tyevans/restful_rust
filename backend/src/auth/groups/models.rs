@@ -20,13 +20,6 @@ pub struct NewGroup {
 }
 
 
-#[derive(Serialize, Clone)]
-pub struct GroupDetails {
-    pub id: uuid::Uuid,
-    pub name: String,
-    pub description: String,
-}
-
 #[derive(Identifiable, Queryable, Associations, Serialize)]
 #[diesel(belongs_to(Group))]
 #[diesel(belongs_to(Permission))]

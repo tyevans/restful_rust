@@ -20,7 +20,7 @@ pub struct UserKey {
     pub path: String,
 }
 
-#[derive(Deserialize, Insertable)]
+#[derive(Deserialize, Insertable, AsChangeset)]
 #[diesel(table_name = auth_users)]
 pub struct NewUser {
     pub display_name: String,
