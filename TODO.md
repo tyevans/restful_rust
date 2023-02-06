@@ -33,7 +33,7 @@
 - [ ] list_group_users
 - [X] add_group_permission
 - [X] list_group_permission
-- [ ] remove_group_permission
+- [X] remove_group_permission
 
 ### Permissions
 
@@ -42,5 +42,5 @@
 - [ ] list_permissions filtering
 - [X] read_permission
 - [X] create_permission
-- [ ] delete_permission
+- [X] delete_permission
 - [ ] user_has_permission

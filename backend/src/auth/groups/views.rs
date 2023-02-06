@@ -71,9 +71,9 @@ pub async fn api_list_group_permissions(
 }
 
 
-#[post("groups/{group_id}/perms/{perm_id}")]
+#[post("groups/{group_id}/perms/{permission_id}")]
 pub async fn api_add_group_permission(
-    new_group_perm: web::Query<NewGroupPermission>
+    new_group_perm: web::Path<NewGroupPermission>
 ) -> web::Json<ObjectList<Permission>> {
     let group_perm_request = new_group_perm.into_inner().clone();
     persist::add_group_permission(
@@ -88,12 +88,13 @@ pub async fn api_add_group_permission(
 }
 
 
-#[delete("groups/{group_id}/perms/{perm_id}")]
-pub async fn api_remove_group_permission(
-    new_group_perm: web::Json<NewGroupPermission>
-) -> web::Json<GroupPermission> {
-    let group_perm = persist::add_group_permission(
-        new_group_perm.into_inner()
+#[delete("groups/{group_id}/perms/{permission_id}")]
+pub async fn api_delete_group_permission(
+    new_group_perm: web::Path<NewGroupPermission>
+) -> &'static str {
+    let group_perm = new_group_perm.into_inner();
+    persist::delete_group_permission(
+        group_perm.group_id, group_perm.permission_id
     ).await;
-    web::Json(group_perm)
+    "OK"
 }

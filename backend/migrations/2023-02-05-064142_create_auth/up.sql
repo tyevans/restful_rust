@@ -29,10 +29,10 @@ CREATE TABLE auth_group_permissions
     UNIQUE (group_id, permission_id),
     CONSTRAINT fk_group_permissions_group_id
         FOREIGN KEY (group_id)
-            REFERENCES auth_groups (id),
+            REFERENCES auth_groups (id) ON DELETE CASCADE,
     CONSTRAINT fk_group_permissions_permission_id
         FOREIGN KEY (permission_id)
-            REFERENCES auth_permissions (id)
+            REFERENCES auth_permissions (id) ON DELETE CASCADE
 );
 
 

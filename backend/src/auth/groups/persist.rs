@@ -144,3 +144,14 @@ pub async fn add_group_permission(group_perm: NewGroupPermission) -> GroupPermis
         .get_result::<GroupPermission>(connection)
         .expect("Error saving new group")
 }
+
+
+pub async fn delete_group_permission(group_id: uuid::Uuid, permission_id: uuid::Uuid) {
+    let connection = &mut establish_connection();
+
+    diesel::delete(auth_group_permissions::table)
+        .filter(auth_group_permissions::group_id.eq(group_id))
+        .filter(auth_group_permissions::permission_id.eq(permission_id))
+        .execute(connection)
+        .expect("Failed to delete group");
+}

@@ -53,3 +53,13 @@ pub async fn create_perm(new_perm: NewPermission) -> Permission {
         .get_result::<Permission>(connection)
         .expect("Error saving new user")
 }
+
+
+pub async fn delete_perm(perm_id: uuid::Uuid) {
+    let connection = &mut establish_connection();
+
+    diesel::delete(auth_permissions::table)
+        .filter(auth_permissions::id.eq(perm_id))
+        .execute(connection)
+        .expect("Failed to delete permission");
+}

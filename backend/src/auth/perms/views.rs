@@ -1,4 +1,4 @@
-use actix_web::{get, post, web};
+use actix_web::{delete, get, post, web};
 use crate::auth::perms::models::NewPermission;
 
 use super::models::Permission;
@@ -24,4 +24,10 @@ pub async fn api_read_perm(query: web::Path<IdRequest>) -> web::Json<Permission>
 pub async fn api_create_perm(new_perm: web::Json<NewPermission>) -> web::Json<Permission> {
     let perm = persist::create_perm(new_perm.into_inner()).await;
     web::Json(perm)
+}
+
+#[delete("perms/{id}")]
+pub async fn api_delete_perm(query: web::Path<IdRequest>) -> &'static str {
+    persist::delete_perm(query.into_inner().id).await;
+    "OK"
 }
