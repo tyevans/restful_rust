@@ -15,7 +15,7 @@ pub struct Permission {
 
 #[derive(Deserialize, Insertable)]
 #[diesel(table_name = auth_permissions)]
-pub struct NewPermission {
+pub struct PermissionData {
     pub name: String,
     pub description: String,
 }

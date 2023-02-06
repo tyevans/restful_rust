@@ -14,7 +14,7 @@ pub struct Group {
 
 #[derive(Deserialize, Insertable)]
 #[diesel(table_name = auth_groups)]
-pub struct NewGroup {
+pub struct GroupData {
     pub name: String,
     pub description: String,
 }
@@ -33,7 +33,7 @@ pub struct GroupPermission {
 
 #[derive(Deserialize, Insertable, Clone)]
 #[diesel(table_name = auth_group_permissions)]
-pub struct NewGroupPermission {
+pub struct GroupPermissionData {
     pub group_id: uuid::Uuid,
     pub permission_id: uuid::Uuid,
 }

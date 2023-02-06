@@ -2,7 +2,7 @@ use actix_web::{get, post, delete, web};
 use crate::auth::perms::models::Permission;
 use crate::auth::users::models::User;
 
-use super::models::{Group, NewGroup, NewGroupPermission};
+use super::models::{Group, GroupData, GroupPermissionData};
 use super::persist;
 
 use crate::common::models::{IdRequest, ListPage, ListQuery, ObjectList};
@@ -27,7 +27,7 @@ pub async fn api_read_group(
 
 
 #[post("groups")]
-pub async fn api_create_group(new_group: web::Json<NewGroup>) -> web::Json<Group> {
+pub async fn api_create_group(new_group: web::Json<GroupData>) -> web::Json<Group> {
     let group = persist::create_group(new_group.into_inner()).await;
     web::Json(group)
 }
@@ -73,7 +73,7 @@ pub async fn api_list_group_permissions(
 
 #[post("groups/{group_id}/perms/{permission_id}")]
 pub async fn api_add_group_permission(
-    new_group_perm: web::Path<NewGroupPermission>
+    new_group_perm: web::Path<GroupPermissionData>
 ) -> web::Json<ObjectList<Permission>> {
     let group_perm_request = new_group_perm.into_inner().clone();
     persist::add_group_permission(
@@ -90,7 +90,7 @@ pub async fn api_add_group_permission(
 
 #[delete("groups/{group_id}/perms/{permission_id}")]
 pub async fn api_delete_group_permission(
-    new_group_perm: web::Path<NewGroupPermission>
+    new_group_perm: web::Path<GroupPermissionData>
 ) -> &'static str {
     let group_perm = new_group_perm.into_inner();
     persist::delete_group_permission(

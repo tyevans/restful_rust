@@ -1,9 +1,9 @@
 use diesel::prelude::*;
 use uuid::Uuid;
-use crate::auth::groups::models::{GroupPermission, NewGroupPermission};
+use crate::auth::groups::models::{GroupPermission, GroupPermissionData};
 use crate::auth::perms::models::Permission;
 
-use super::models::{Group, NewGroup};
+use super::models::{Group, GroupData};
 use crate::auth::users::models::{User, UserGroup};
 use crate::common::models::{IdRequest, ListPage, ObjectList, Page};
 use crate::database::establish_connection;
@@ -116,7 +116,7 @@ pub async fn read_group(query: IdRequest) -> Group {
 }
 
 
-pub async fn create_group(new_group: NewGroup) -> Group {
+pub async fn create_group(new_group: GroupData) -> Group {
     let connection = &mut establish_connection();
 
     diesel::insert_into(auth_groups::table)
@@ -136,7 +136,7 @@ pub async fn delete_group(group_id: uuid::Uuid) {
 }
 
 
-pub async fn add_group_permission(group_perm: NewGroupPermission) -> GroupPermission {
+pub async fn add_group_permission(group_perm: GroupPermissionData) -> GroupPermission {
     let connection = &mut establish_connection();
 
     diesel::insert_into(auth_group_permissions::table)

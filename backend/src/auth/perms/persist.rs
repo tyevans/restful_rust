@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 
-use super::models::{Permission, NewPermission};
+use super::models::{Permission, PermissionData};
 use crate::common::models::{IdRequest, ListPage, ObjectList, Page};
 use crate::database::establish_connection;
 use crate::schema::auth_permissions;
@@ -45,7 +45,7 @@ pub async fn read_perm(query: IdRequest) -> Permission {
 }
 
 
-pub async fn create_perm(new_perm: NewPermission) -> Permission {
+pub async fn create_perm(new_perm: PermissionData) -> Permission {
     let connection = &mut establish_connection();
 
     diesel::insert_into(auth_permissions::table)

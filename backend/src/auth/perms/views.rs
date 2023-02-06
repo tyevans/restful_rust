@@ -1,5 +1,5 @@
 use actix_web::{delete, get, post, web};
-use crate::auth::perms::models::NewPermission;
+use crate::auth::perms::models::PermissionData;
 
 use super::models::Permission;
 use super::persist;
@@ -21,7 +21,7 @@ pub async fn api_read_perm(query: web::Path<IdRequest>) -> web::Json<Permission>
 }
 
 #[post("perms")]
-pub async fn api_create_perm(new_perm: web::Json<NewPermission>) -> web::Json<Permission> {
+pub async fn api_create_perm(new_perm: web::Json<PermissionData>) -> web::Json<Permission> {
     let perm = persist::create_perm(new_perm.into_inner()).await;
     web::Json(perm)
 }

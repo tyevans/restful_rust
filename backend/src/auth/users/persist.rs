@@ -1,8 +1,8 @@
 use diesel::prelude::*;
 use crate::auth::groups::models::Group;
-use crate::auth::users::models::{NewUserGroup, UserGroup, UserPermissionData};
+use crate::auth::users::models::{UserGroupData, UserGroup, UserPermissionData};
 
-use super::models::{NewUser, User};
+use super::models::{UserData, User};
 use crate::common::models::{IdRequest, ListPage, ObjectList, Page};
 use crate::database::establish_connection;
 use crate::schema::{auth_groups, auth_user_groups, auth_users, auth_group_permissions};
@@ -47,7 +47,7 @@ pub async fn read_user(query: IdRequest) -> User {
 }
 
 
-pub async fn create_user(new_user: NewUser) -> User {
+pub async fn create_user(new_user: UserData) -> User {
     let connection = &mut establish_connection();
 
     diesel::insert_into(auth_users::table)
@@ -57,7 +57,7 @@ pub async fn create_user(new_user: NewUser) -> User {
 }
 
 
-pub async fn update_user(user_id: uuid::Uuid, updated_user: NewUser) -> User {
+pub async fn update_user(user_id: uuid::Uuid, updated_user: UserData) -> User {
     let connection = &mut establish_connection();
 
     diesel::update(auth_users::table)
@@ -111,7 +111,7 @@ pub async fn list_user_groups(user_id: uuid::Uuid, query: ListPage) -> ObjectLis
 }
 
 
-pub async fn add_user_group(user_group: NewUserGroup) -> UserGroup {
+pub async fn add_user_group(user_group: UserGroupData) -> UserGroup {
     let connection = &mut establish_connection();
 
     diesel::insert_into(auth_user_groups::table)
@@ -121,7 +121,7 @@ pub async fn add_user_group(user_group: NewUserGroup) -> UserGroup {
 }
 
 
-pub async fn delete_user_group(user_group: NewUserGroup) {
+pub async fn delete_user_group(user_group: UserGroupData) {
     let connection = &mut establish_connection();
 
     diesel::delete(auth_user_groups::table)

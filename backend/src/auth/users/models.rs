@@ -22,7 +22,7 @@ pub struct UserKey {
 
 #[derive(Deserialize, Insertable, AsChangeset)]
 #[diesel(table_name = auth_users)]
-pub struct NewUser {
+pub struct UserData {
     pub display_name: String,
     pub email: String,
 }
@@ -39,7 +39,7 @@ pub struct UserGroup {
 
 #[derive(Deserialize, Insertable)]
 #[diesel(table_name = auth_user_groups)]
-pub struct NewUserGroup {
+pub struct UserGroupData {
     pub user_id: uuid::Uuid,
     pub group_id: uuid::Uuid,
 }
