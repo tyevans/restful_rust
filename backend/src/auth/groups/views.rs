@@ -1,8 +1,8 @@
 use actix_web::{get, post, delete, web};
 use crate::auth::perms::models::Permission;
-use crate::auth::users::models::NewUserGroup;
+use crate::auth::users::models::User;
 
-use super::models::{Group, NewGroup, GroupPermission, NewGroupPermission};
+use super::models::{Group, NewGroup, NewGroupPermission};
 use super::persist;
 
 use crate::common::models::{IdRequest, ListPage, ListQuery, ObjectList};
@@ -45,14 +45,14 @@ pub async fn api_delete_group(
 pub async fn api_list_group_users(
     params: web::Path<IdRequest>,
     query: web::Query<ListQuery>,
-) -> web::Json<ObjectList<Permission>> {
+) -> web::Json<ObjectList<User>> {
     let page = list_query_to_page(query.into_inner());
-    let permissions = persist::list_group_perms(
+    let users = persist::list_group_users(
         params.into_inner().id,
         page,
     ).await;
 
-    web::Json(permissions)
+    web::Json(users)
 }
 
 

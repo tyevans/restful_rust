@@ -1,6 +1,6 @@
 use actix_web::{delete, get, post, put, web};
-use crate::auth::users::models::{NewUserGroup, UserGroup};
-use super::models::{NewUser, User};
+use super::models::{NewUser, User, NewUserGroup, UserGroup, UserPermissionData};
+use crate::auth::groups::models::{Group};
 use super::persist;
 use crate::common::models::{IdRequest, ListQuery, ObjectList};
 use crate::common::pagination::list_query_to_page;
@@ -40,6 +40,21 @@ pub async fn api_delete_user(query: web::Path<IdRequest>) -> &'static str {
 }
 
 
+#[get("users/{id}/groups")]
+pub async fn api_list_user_groups(
+    params: web::Path<IdRequest>,
+    query: web::Query<ListQuery>,
+) -> web::Json<ObjectList<Group>> {
+    let page = list_query_to_page(query.into_inner());
+    let groups = persist::list_user_groups(
+        params.into_inner().id,
+        page,
+    ).await;
+
+    web::Json(groups)
+}
+
+
 #[post("users/{user_id}/groups/{group_id}")]
 pub async fn api_add_user_group(new_user_group: web::Path<NewUserGroup>) -> web::Json<UserGroup> {
     let user_group = persist::add_user_group(new_user_group.into_inner()).await;
@@ -51,4 +66,10 @@ pub async fn api_add_user_group(new_user_group: web::Path<NewUserGroup>) -> web:
 pub async fn api_delete_user_group(new_user_group: web::Path<NewUserGroup>) -> &'static str {
     persist::delete_user_group(new_user_group.into_inner()).await;
     "OK"
+}
+
+
+#[get("users/{user_id}/perms/{permission_id}")]
+pub async fn api_user_has_perm(user_perm: web::Path<UserPermissionData>) -> web::Json<bool> {
+    web::Json(persist::user_has_perm(user_perm.into_inner()).await)
 }

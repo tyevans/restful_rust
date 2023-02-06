@@ -43,3 +43,9 @@ pub struct NewUserGroup {
     pub user_id: uuid::Uuid,
     pub group_id: uuid::Uuid,
 }
+
+#[derive(Deserialize)]
+pub struct UserPermissionData {
+    pub user_id: uuid::Uuid,
+    pub permission_id: uuid::Uuid,
+}

@@ -28,7 +28,7 @@ pub fn auth_route_config(cfg: &mut web::ServiceConfig) {
         .service(perms::views::api_list_perms)
         .service(perms::views::api_read_perm)
         .service(perms::views::api_create_perm)
-        .service(perms::views::api_delete_perm);
+        .service(perms::views::api_delete_perm)
 
-    // .service(perms::views::api_user_has_perm)
+        .service(users::views::api_user_has_perm);
 }

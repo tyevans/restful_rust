@@ -1,11 +1,13 @@
 use diesel::prelude::*;
-use crate::auth::users::models::{NewUserGroup, UserGroup};
+use crate::auth::groups::models::Group;
+use crate::auth::users::models::{NewUserGroup, UserGroup, UserPermissionData};
 
 use super::models::{NewUser, User};
 use crate::common::models::{IdRequest, ListPage, ObjectList, Page};
 use crate::database::establish_connection;
-use crate::schema::{auth_user_groups, auth_users};
+use crate::schema::{auth_groups, auth_user_groups, auth_users, auth_group_permissions};
 use crate::schema::auth_users::table as users_query;
+use crate::schema::auth_groups::table as groups_query;
 
 pub async fn list_users(query: ListPage) -> ObjectList<User> {
     let connection = &mut establish_connection();
@@ -75,6 +77,39 @@ pub async fn delete_user(user_id: uuid::Uuid) {
         .expect("Failed to delete user");
 }
 
+pub async fn list_user_groups(user_id: uuid::Uuid, query: ListPage) -> ObjectList<Group> {
+    let connection = &mut establish_connection();
+
+    let page = query.page;
+    let per_page = query.per_page;
+    let offset = (page - 1) * per_page;
+    let limit = per_page;
+
+    let user = User {
+        id: user_id,
+        display_name: "".parse().unwrap(),
+        email: "".parse().unwrap(),
+        active: true
+    };
+    let group_ids = UserGroup::belonging_to(&user).select(auth_user_groups::group_id);
+
+    let results = groups_query
+        .filter(auth_groups::id.eq_any(group_ids))
+        .offset(offset)
+        .limit(limit)
+        .load::<Group>(connection)
+        .expect("could not load users");
+
+    ObjectList {
+        objects: results.clone(),
+        page: Page {
+            page,
+            per_page,
+            count: results.len() as i64,
+        },
+    }
+}
+
 
 pub async fn add_user_group(user_group: NewUserGroup) -> UserGroup {
     let connection = &mut establish_connection();
@@ -94,4 +129,25 @@ pub async fn delete_user_group(user_group: NewUserGroup) {
         .filter(auth_user_groups::group_id.eq(user_group.group_id))
         .execute(connection)
         .expect("Failed to delete user");
+}
+
+pub async fn user_has_perm(user_perm: UserPermissionData) -> bool {
+    let connection = &mut establish_connection();
+
+    let user = User {
+        id: user_perm.user_id,
+        display_name: "".parse().unwrap(),
+        email: "".parse().unwrap(),
+        active: true
+    };
+    let group_ids = UserGroup::belonging_to(&user).select(auth_user_groups::group_id);
+
+    let results: i64 = auth_group_permissions::table
+        .filter(auth_group_permissions::group_id.eq_any(group_ids))
+        .filter(auth_group_permissions::permission_id.eq(user_perm.permission_id))
+        .count()
+        .first(connection)
+        .expect("Failed to check user permissions");
+
+    results > 0
 }

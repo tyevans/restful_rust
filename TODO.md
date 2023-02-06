@@ -18,9 +18,10 @@
 - [ ] create_user - first key
 - [X] update_user
 - [X] delete_user
-- [ ] list_user_groups
+- [X] list_user_groups
 - [X] add_user_group
 - [X] remove_user_group
+- [X] user_has_permission
 
 ### Groups
 
@@ -30,7 +31,7 @@
 - [X] read_group
 - [X] create_group
 - [X] delete_group
-- [ ] list_group_users
+- [X] list_group_users
 - [X] add_group_permission
 - [X] list_group_permission
 - [X] remove_group_permission
@@ -43,4 +44,3 @@
 - [X] read_permission
 - [X] create_permission
 - [X] delete_permission
-- [ ] user_has_permission
